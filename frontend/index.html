@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kampala University Chat House - Connect & Discuss</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Separate stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+    <button class="theme-toggle auth-theme-toggle" id="theme-toggle" type="button" onclick="toggleTheme()" title="Toggle dark/light mode" aria-label="Toggle dark/light mode"><i class="fa-solid fa-moon"></i></button>
+    <!-- Premium background elements -->
+    <div class="bg-gradient-blob blob-1"></div>
+    <div class="bg-gradient-blob blob-2"></div>
+    <div class="bg-gradient-blob blob-3"></div>
+
+    <div class="auth-container">
+        <!-- Logo and brand details -->
+        <header class="auth-header">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>KU Chat House</span>
+            </div>
+            <h1>Registration Portal</h1>
+            <p>Connect with peers, ask questions, share announcements, and get answers from faculty & administrators.</p>
+        </header>
+
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+                <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label for="login-username"><i class="fa-solid fa-id-card"></i> Institution ID</label>
+                    <input type="text" id="login-username" placeholder="e.g. STU-1002, LEC-2005, ADM-3001" required autocomplete="username">
+                </div>
+
+                <div class="input-group">
+                    <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-password')">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="login-submit-btn">
+                    <span>Sign In</span> <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="reg-username"><i class="fa-solid fa-user"></i> Username</label>
+                        <input type="text" id="reg-username" placeholder="Jackson Dhigombye" required autocomplete="username">
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-id"><i class="fa-solid fa-id-card"></i> Institution ID</label>
+                        <input type="text" id="reg-id" placeholder="Student: KU-STD-… | Lecturer: KU-LEC-… | Admin: KU-ADM-…" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="reg-category"><i class="fa-solid fa-users"></i> Category</label>
+                        <select id="reg-category" onchange="handleCategoryChange()" required>
+                            <option value="" disabled selected>Select Role</option>
+                            <option value="Student">Student</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Administrator">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-faculty"><i class="fa-solid fa-building-columns"></i> Faculty</label>
+                        <select id="reg-faculty" required>
+                            <option value="" disabled selected>Select Faculty</option>
+                            <option value="Faculty of Computer Science and IT">Computer Science and IT</option>
+                            <option value="Faculty of Education">Education</option>
+                            <option value="Faculty of Arts and social sciences">Arts and Social Sciences</option>
+                            <option value="Faculty of Business">Business</option>
+                            <option value="Faculty of Social Work and Social Administration">Social work and social Administration</option>
+                            <option value="General Administration">General Administration (Admin Only)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="reg-email"><i class="fa-solid fa-envelope"></i> Gmail Address</label>
+                        <input type="email" id="reg-email" placeholder="name@gmail.com" required autocomplete="email">
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-contact"><i class="fa-solid fa-phone"></i> Contact Number</label>
+                        <input type="tel" id="reg-contact" placeholder="07********" required autocomplete="tel">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="reg-dob"><i class="fa-solid fa-calendar-days"></i> Date of Birth</label>
+                        <input type="date" id="reg-dob" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" placeholder="••••••••" required autocomplete="new-password">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-password')">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="register-submit-btn">
+                    <span>Create Account</span> <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div class="modal-overlay" id="verify-modal">
+        <div class="modal-card scale-in">
+            <div class="modal-header">
+                <i class="fa-solid fa-envelope-circle-check modal-icon"></i>
+                <h2>Verify Your Email</h2>
+                <p>We've simulated sending a 6-digit confirmation code to your Gmail address.</p>
+            </div>
+            
+            <form id="verify-form" onsubmit="handleVerification(event)">
+                <input type="hidden" id="verify-user-id" value="">
+                
+                <div class="verification-code-container">
+                    <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" oninput="moveNext(this, 1)" onkeydown="moveBack(this, 1)">
+                    <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" oninput="moveNext(this, 2)" onkeydown="moveBack(this, 2)">
+                    <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" oninput="moveNext(this, 3)" onkeydown="moveBack(this, 3)">
+                    <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" oninput="moveNext(this, 4)" onkeydown="moveBack(this, 4)">
+                    <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" oninput="moveNext(this, 5)" onkeydown="moveBack(this, 5)">
+                    <input type="text" maxlength="1" class="code-input" required pattern="[0-9]" oninput="moveNext(this, 6)" onkeydown="moveBack(this, 6)">
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Confirm Code <i class="fa-solid fa-circle-check"></i>
+                </button>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeVerifyModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Area -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Simulation Sandbox Helper (Shows Gmail verification codes on screen for demonstration) -->
+    <div class="simulation-mailbox" id="simulation-mailbox">
+        <div class="mailbox-header">
+            <i class="fa-solid fa-bug"></i>
+            <span>Dev Sandbox: Gmail Simulation</span>
+            <button onclick="toggleMailbox()"><i class="fa-solid fa-chevron-down" id="mailbox-toggle-icon"></i></button>
+        </div>
+        <div class="mailbox-body" id="mailbox-body">
+            <p class="no-messages" id="mailbox-empty-text">No simulated emails sent yet.</p>
+            <div id="mailbox-list"></div>
+        </div>
+    </div>
+
+    <!-- Separate script -->
+    <script src="app.js"></script>
+</body>
+</html>
