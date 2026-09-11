@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU Chat House - Messages</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style.css links -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="feed-page" data-page="messages">
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-container">
+
+            <!-- Left: Brand -->
+            <a class="brand" href="/feed">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>KU Chat House</span>
+            </a>
+
+            <!-- Centre: Nav links -->
+            <div class="nav-links">
+                <a href="/feed" class="nav-link" data-page="feed" title="Feed">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Feed</span>
+                </a>
+                <a href="/members" class="nav-link" data-page="members" title="Members">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Members</span>
+                </a>
+                <a href="/messages" class="nav-link active" data-page="messages" title="Messages">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Messages</span>
+                    <span class="nav-badge" id="requests-badge" style="display:none;">0</span>
+                </a>
+                <a href="/profile" class="nav-link" data-page="profile" title="Profile">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/about" class="nav-link" data-page="about" title="About">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>About</span>
+                </a>
+            </div>
+
+            <!-- Right: Search + Theme + Avatar -->
+            <div class="nav-right">
+                <div class="nav-search" id="nav-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="global-search-input" placeholder="Search..."
+                           oninput="handleGlobalSearchInput(event)"
+                           onfocus="handleGlobalSearchFocus()">
+                    <button type="button" class="clear-search-btn" id="clear-search-btn" style="display:none;" onclick="clearGlobalSearch()" title="Clear">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="search-results-dropdown" id="search-results-dropdown"></div>
+                </div>
+
+                <button class="theme-toggle" id="theme-toggle" type="button" onclick="toggleTheme()" title="Toggle dark/light mode" aria-label="Toggle dark/light mode"><i class="fa-solid fa-moon"></i></button>
+
+                <!-- Avatar + dropdown -->
+                <div class="nav-avatar-wrap" id="nav-avatar-wrap">
+                    <button class="nav-avatar-btn" id="nav-avatar-btn" onclick="toggleNavDropdown()" aria-label="Account menu">
+                        <div class="user-avatar" id="nav-avatar">U</div>
+                        <i class="fa-solid fa-caret-down nav-caret"></i>
+                    </button>
+                    <div class="nav-dropdown" id="nav-dropdown">
+                        <div class="nav-dropdown-profile">
+                            <div class="nav-drop-avatar" id="nav-drop-avatar">U</div>
+                            <div class="nav-drop-info">
+                                <span class="nav-drop-name" id="nav-username">Loading...</span>
+                                <span class="user-role-badge" id="nav-role">Student</span>
+                                <span class="nav-drop-id" id="nav-drop-id"></span>
+                            </div>
+                        </div>
+                        <div class="nav-dropdown-divider"></div>
+                        <a href="/profile" class="nav-dropdown-item">
+                            <i class="fa-solid fa-user-pen"></i> Edit Profile
+                        </a>
+                        <button class="nav-dropdown-item nav-dropdown-logout" onclick="handleLogout()">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <div class="app-layout layout-wide">
+        <main class="page-content">
+            <div class="page-header">
+                <div>
+                    <h1><i class="fa-solid fa-comment-dots text-indigo"></i> Messages</h1>
+                    <p>Chat privately with members who've accepted your connection request, or start a group.</p>
+                </div>
+                <button type="button" class="new-group-btn" onclick="openNewGroupPanel()">
+                    <i class="fa-solid fa-user-group"></i> New Group
+                </button>
+            </div>
+
+            <div class="messages-layout page-panel">
+                <div class="messages-sidebar">
+                    <div class="messages-tabs">
+                        <button class="messages-tab-btn active" id="msg-tab-chats" onclick="switchMessagesTab('chats')">Chats</button>
+                        <button class="messages-tab-btn" id="msg-tab-groups" onclick="switchMessagesTab('groups')">Groups</button>
+                        <button class="messages-tab-btn" id="msg-tab-requests" onclick="switchMessagesTab('requests')">
+                            Requests <span class="badge-count" id="requests-tab-badge" style="display:none;">0</span>
+                        </button>
+                    </div>
+                    <div class="messages-list" id="chats-list">
+                        <div class="feed-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+                    </div>
+                    <div class="messages-list" id="groups-list" style="display:none;">
+                        <div class="feed-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+                    </div>
+                    <div class="messages-list" id="requests-list" style="display:none;">
+                        <div class="feed-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+                    </div>
+                </div>
+
+                <div class="messages-chat-pane" id="messages-chat-pane">
+                    <div class="chat-placeholder" id="chat-placeholder">
+                        <i class="fa-solid fa-comments"></i>
+                        <p>Select a chat, or start a new group</p>
+                    </div>
+
+                    <div class="new-group-panel" id="new-group-panel" style="display:none;">
+                        <div class="new-group-panel-header">
+                            <h3><i class="fa-solid fa-user-group text-indigo"></i> Create a Group</h3>
+                            <button type="button" class="modal-close-x" onclick="closeNewGroupPanel()"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <form id="new-group-form" onsubmit="handleCreateGroup(event)">
+                            <div class="input-group">
+                                <label for="new-group-name"><i class="fa-solid fa-tag"></i> Group name</label>
+                                <input type="text" id="new-group-name" placeholder="e.g. CS Finals Study Group" required>
+                            </div>
+                            <div class="input-group">
+                                <label><i class="fa-solid fa-users"></i> Add connections</label>
+                                <div class="group-member-picker" id="group-member-picker">
+                                    <div class="feed-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+                                </div>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="cancel-btn" onclick="closeNewGroupPanel()">Cancel</button>
+                                <button type="submit" class="submit-btn bg-indigo">Create Group <i class="fa-solid fa-check"></i></button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="chat-thread" id="chat-thread" style="display:none;">
+                        <div class="chat-thread-header" id="chat-thread-header"></div>
+                        <div class="chat-messages" id="chat-messages"></div>
+                        <div class="chat-media-preview" id="chat-media-preview" style="display:none;"></div>
+                        <form class="chat-input-row" id="chat-input-form" onsubmit="handleSendChatMessage(event)">
+                            <input type="file" id="chat-media-input" accept="image/*,audio/*" style="display:none;" onchange="handleChatMediaSelected(event)">
+                            <label for="chat-media-input" class="chat-attach-btn" title="Attach a photo or audio clip">
+                                <i class="fa-solid fa-paperclip"></i>
+                            </label>
+                            <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+                            <button type="submit" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications Area -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Script Import -->
+    <script src="app.js"></script>
+</body>
+</html>

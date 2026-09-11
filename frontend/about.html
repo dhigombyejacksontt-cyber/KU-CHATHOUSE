@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KU Chat House - About</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Style.css links -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="feed-page" data-page="about">
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-container">
+
+            <!-- Left: Brand -->
+            <a class="brand" href="/feed">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>KU Chat House</span>
+            </a>
+
+            <!-- Centre: Nav links -->
+            <div class="nav-links">
+                <a href="/feed" class="nav-link" data-page="feed" title="Feed">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Feed</span>
+                </a>
+                <a href="/members" class="nav-link" data-page="members" title="Members">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Members</span>
+                </a>
+                <a href="/messages" class="nav-link" data-page="messages" title="Messages">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Messages</span>
+                    <span class="nav-badge" id="requests-badge" style="display:none;">0</span>
+                </a>
+                <a href="/profile" class="nav-link" data-page="profile" title="Profile">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="/about" class="nav-link active" data-page="about" title="About">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>About</span>
+                </a>
+            </div>
+
+            <!-- Right: Search + Theme + Avatar -->
+            <div class="nav-right">
+                <div class="nav-search" id="nav-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="global-search-input" placeholder="Search..."
+                           oninput="handleGlobalSearchInput(event)"
+                           onfocus="handleGlobalSearchFocus()">
+                    <button type="button" class="clear-search-btn" id="clear-search-btn" style="display:none;" onclick="clearGlobalSearch()" title="Clear">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="search-results-dropdown" id="search-results-dropdown"></div>
+                </div>
+
+                <button class="theme-toggle" id="theme-toggle" type="button" onclick="toggleTheme()" title="Toggle dark/light mode" aria-label="Toggle dark/light mode"><i class="fa-solid fa-moon"></i></button>
+
+                <!-- Avatar + dropdown -->
+                <div class="nav-avatar-wrap" id="nav-avatar-wrap">
+                    <button class="nav-avatar-btn" id="nav-avatar-btn" onclick="toggleNavDropdown()" aria-label="Account menu">
+                        <div class="user-avatar" id="nav-avatar">U</div>
+                        <i class="fa-solid fa-caret-down nav-caret"></i>
+                    </button>
+                    <div class="nav-dropdown" id="nav-dropdown">
+                        <div class="nav-dropdown-profile">
+                            <div class="nav-drop-avatar" id="nav-drop-avatar">U</div>
+                            <div class="nav-drop-info">
+                                <span class="nav-drop-name" id="nav-username">Loading...</span>
+                                <span class="user-role-badge" id="nav-role">Student</span>
+                                <span class="nav-drop-id" id="nav-drop-id"></span>
+                            </div>
+                        </div>
+                        <div class="nav-dropdown-divider"></div>
+                        <a href="/profile" class="nav-dropdown-item">
+                            <i class="fa-solid fa-user-pen"></i> Edit Profile
+                        </a>
+                        <button class="nav-dropdown-item nav-dropdown-logout" onclick="handleLogout()">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <div class="app-layout">
+        <main class="page-content">
+            <div class="page-header">
+                <div>
+                    <h1><i class="fa-solid fa-graduation-cap text-indigo"></i> About KU Chat House</h1>
+                    <p>The official community space for Kampala University students, lecturers, and administrators.</p>
+                </div>
+            </div>
+
+            <div class="about-body page-panel">
+                <div class="about-feature">
+                    <i class="fa-solid fa-comments text-indigo"></i>
+                    <div>
+                        <h4>Discuss & Ask</h4>
+                        <p>Post questions, share updates, and get answers from peers, lecturers, and admins in one shared feed.</p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <i class="fa-solid fa-bullhorn text-amber"></i>
+                    <div>
+                        <h4>Official Announcements</h4>
+                        <p>Administrators can pin important campus announcements straight to the top of the feed.</p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <i class="fa-solid fa-heart text-indigo"></i>
+                    <div>
+                        <h4>React to Comments</h4>
+                        <p>Comments are shown right on each post, and you can react to the ones that are helpful.</p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <i class="fa-solid fa-users text-emerald"></i>
+                    <div>
+                        <h4>Members Directory</h4>
+                        <p>Browse everyone registered on the platform and send a connection request to start chatting.</p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <i class="fa-solid fa-lock text-indigo"></i>
+                    <div>
+                        <h4>Private, Consent-Based Messaging</h4>
+                        <p>You can only message a member after they've accepted your connection request -- no unsolicited DMs. Attach photos or audio clips right in the chat.</p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <i class="fa-solid fa-user-group text-amber"></i>
+                    <div>
+                        <h4>Group Chats</h4>
+                        <p>Start a group with people you're connected with -- perfect for study groups and class projects.</p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <i class="fa-solid fa-id-card text-amber"></i>
+                    <div>
+                        <h4>Your University ID</h4>
+                        <p>Your ID is your permanent login credential and can never be changed. Your username, photo, and bio can be updated anytime.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications Area -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Script Import -->
+    <script src="app.js"></script>
+</body>
+</html>
